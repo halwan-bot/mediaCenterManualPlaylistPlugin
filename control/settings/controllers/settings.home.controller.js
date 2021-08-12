@@ -11,18 +11,12 @@
 
             MediaCenter.get().then((getData) => {
                 Settings.data = getData.data;
-                // if (typeof (Settings.data.content.allowShare) == 'undefined')
-                //     Settings.data.content.allowShare = true;
                 if (typeof (Settings.data.content.allowSource) == 'undefined')
                     Settings.data.content.allowSource = true;
-                // if (typeof (Settings.data.content.transferAudioContentToPlayList) == 'undefined')
-                //     Settings.data.content.transferAudioContentToPlayList = false;
-                // if (typeof (Settings.data.content.forceAutoPlay) == 'undefined')
-                //     Settings.data.content.forceAutoPlay = false;
                 if (typeof (Settings.data.design.skipMediaPage) == 'undefined')
                     Settings.data.design.skipMediaPage = true;
                 if (typeof (Settings.data.content.autoPlay) == 'undefined')
-                    Settings.data.content.autoPlay = false;
+                    Settings.data.content.autoPlay = true;
                 if (typeof (Settings.data.content.autoPlayDelay) == 'undefined')
                     Settings.data.content.autoPlayDelay = { label: "Off", value: 0 };
             }, (err) => {
@@ -41,8 +35,10 @@
                 MediaCenter.save(Settings.data).then(() => {});
             }
 
-            Settings.changeSkipPage = (value) => {
-                if (value!=Settings.data.design.skipMediaPage) {
+            Settings.changeSkipPage = (e) => {
+                let value = e.target.checked;
+                console.error('changeSkipPage',value)
+                if (value!=Settings.data.design.skipMediaPage){
                     if (value === false) {
                         Settings.data.content.autoPlay = false;
                     }
@@ -51,14 +47,18 @@
                 }
             };
 
-            Settings.setAllowSource = (value) => {
+            Settings.setAllowSource = (e) => {
+                let value = e.target.checked;
+                console.error('setAllowSource',value)
                 if(value!=Settings.data.content.allowSource){
                     Settings.data.content.allowSource=value;
                     MediaCenter.save(Settings.data).then(() => {});
                 }
             }
 
-            Settings.setAutoPlay = (value) => {
+            Settings.setAutoPlay = (e) => {
+                let value = e.target.checked;
+                console.error('setAutoPlay', value)
                 if (value != Settings.data.content.autoPlay) {
                     if (value === true && Settings.data.content.forceAutoPlay) {
                         Settings.data.content.forceAutoPlay = false;
@@ -67,9 +67,9 @@
                     if (value === true) Settings.data.design.skipMediaPage = true;
                     Settings.data.content.autoPlay = value;
                     MediaCenter.save(Settings.data).then(() => {});
-                };
+                }
             };
-            
+
             Settings.setAutoPlayDelay = (option) => {
                 if (option.value != Settings.data.content.autoPlayDelay.value) {
                     Settings.data.content.autoPlayDelay = option;

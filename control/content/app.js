@@ -49,45 +49,45 @@
                         }]
                     }
                 })
-                .when('/media', {
-                    templateUrl: 'templates/media.html',
-                    controllerAs: 'ContentMedia',
-                    controller: 'ContentMediaCtrl',
-                    resolve: {
-                        media: function () {
-                            return null;
-                        }
-                    }
-                })
-                .when('/media/:itemId', {
-                    templateUrl: 'templates/media.html',
-                    controllerAs: 'ContentMedia',
-                    controller: 'ContentMediaCtrl',
-                    resolve: {
-                        media: ['$q', 'DB', 'COLLECTIONS', 'Orders', 'Location', '$route', function ($q, DB, COLLECTIONS, Orders, Location, $route) {
-                            var deferred = $q.defer();
-                            var MediaContent = new DB(COLLECTIONS.MediaContent);
-                            if ($route.current.params.itemId) {
-                                MediaContent.getById($route.current.params.itemId).then(function success(result) {
-                                        if (result && result.data) {
-                                            deferred.resolve(result);
-                                        }
-                                        else {
-                                            Location.goToHome();
-                                        }
-                                    },
-                                    function fail() {
-                                        Location.goToHome();
-                                    }
-                                );
-                            }
-                            else {
-                                Location.goToHome();
-                            }
-                            return deferred.promise;
-                        }]
-                    }
-                })
+                // .when('/media', {
+                //     templateUrl: 'templates/media.html',
+                //     controllerAs: 'ContentMedia',
+                //     controller: 'ContentMediaCtrl',
+                //     resolve: {
+                //         media: function () {
+                //             return null;
+                //         }
+                //     }
+                // })
+                // .when('/media/:itemId', {
+                //     templateUrl: 'templates/media.html',
+                //     controllerAs: 'ContentMedia',
+                //     controller: 'ContentMediaCtrl',
+                //     resolve: {
+                //         media: ['$q', 'DB', 'COLLECTIONS', 'Orders', 'Location', '$route', function ($q, DB, COLLECTIONS, Orders, Location, $route) {
+                //             var deferred = $q.defer();
+                //             var MediaContent = new DB(COLLECTIONS.MediaContent);
+                //             if ($route.current.params.itemId) {
+                //                 MediaContent.getById($route.current.params.itemId).then(function success(result) {
+                //                         if (result && result.data) {
+                //                             deferred.resolve(result);
+                //                         }
+                //                         else {
+                //                             Location.goToHome();
+                //                         }
+                //                     },
+                //                     function fail() {
+                //                         Location.goToHome();
+                //                     }
+                //                 );
+                //             }
+                //             else {
+                //                 Location.goToHome();
+                //             }
+                //             return deferred.promise;
+                //         }]
+                //     }
+                // })
                 .otherwise('/');
             var interceptor = ['$q', function ($q) {
                 var counter = 0;

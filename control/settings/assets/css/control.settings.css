@@ -240,3 +240,29 @@
     border: none;
   }
   
+  .input-group {
+    z-index: 0;
+  }
+
+  .input-group input {
+    height: 40px;
+  }
+
+  .input-group-addon {
+    color: #ffffff !important;
+    background-color: #1d2326 !important;
+    border: 1px solid #1d2326 !important;
+    cursor: pointer;
+    -webkit-user-select: none;       
+    -moz-user-select: none; 
+    -ms-user-select: none; 
+    user-select: none; 
+  }
+  
+  .input-group-addon:hover {
+    background-color: #3c3c3c !important;
+  }
+  
+  .setting-label {
+    color: var(--c-info);
+  }
