@@ -173,11 +173,8 @@
                         location.reload();
                 };
 
-                let updateDelay;
                 var onUpdateCallback = function (event) {
                     buildfire.spinner.show();
-                    clearTimeout(updateDelay);
-
                     if (event.tag == "MediaCenter") {
                         if (event.data) {
                             WidgetHome.media.data = event.data;
@@ -190,38 +187,38 @@
                             $rootScope.autoPlay = WidgetHome.media.data.content.autoPlay;
                             $rootScope.autoPlayDelay = WidgetHome.media.data.content.autoPlayDelay;
 
-                            $scope.$apply();
                             if (view && event.data.content && event.data.content.images) {
                                 view.loadItems(event.data.content.images);
                             }
-                            updateDelay = setTimeout(() => {
-                                $rootScope.refreshItems();
-                            }, 300);
+                            $rootScope.refreshItems();
+                            buildfire.spinner.hide();
                             if (!$scope.$$phase && !$scope.$root.$$phase) $scope.$apply();
                         } else {
                             buildfire.spinner.hide();
                             if (!$scope.$$phase && !$scope.$root.$$phase) $scope.$apply();
                         }
-                    } 
-                    // Make sure to delete from globalPlaylist if exists
-                    else if (event.tag === "MediaContent") {
+                    } else if (event.tag === "MediaContent") {
+                        // Make sure to delete from globalPlaylist if exists
                         if ($rootScope.isInGlobalPlaylist(event.id)) {
                             if (event.data) {
                                 GlobalPlaylist.insertAndUpdate(event).then(() => {
                                     $rootScope.globalPlaylistItems.playlist[event.id] = event.data;
+                                    buildfire.spinner.hide();
+                                    if (!$scope.$$phase && !$scope.$root.$$phase) $scope.$apply();
                                 });
                             } else {
                                 // If there is no data, it means the the item has been deleted
                                 GlobalPlaylist.delete(event.id).then(() => {
                                     delete $rootScope.globalPlaylistItems.playlist[event.id];
+                                    buildfire.spinner.hide();
+                                    if (!$scope.$$phase && !$scope.$root.$$phase) $scope.$apply();
                                 });
                             }
+                        } else {
+                            $rootScope.refreshItems();
+                            buildfire.spinner.hide();
                         }
                     }
-                    updateDelay = setTimeout(() => {
-                        $rootScope.refreshItems();
-                    }, 300);
-                    if (!$scope.$$phase && !$scope.$root.$$phase) $scope.$apply();
                 };
 
                 /**
@@ -376,12 +373,14 @@
                     if (WidgetHome.isBusy || WidgetHome.noMore) {
                         buildfire.spinner.hide();
                         $rootScope.loadingData = false;
+                        if (!$scope.$$phase && !$scope.$root.$$phase) $scope.$apply();
                         return;
                     }
                     
                     $rootScope.loadingData = true;
-                    buildfire.spinner.show();
                     WidgetHome.isBusy = true;
+                    buildfire.spinner.show();
+                    if (!$scope.$$phase && !$scope.$root.$$phase) $scope.$apply();
 
                     const getGlobalPlaylistItems = () => {
                         return new Promise(resolve => {
