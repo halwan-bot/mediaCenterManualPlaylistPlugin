@@ -9,6 +9,7 @@
                 WidgetMedia.showSource = false;
                 WidgetMedia.loadingVideo = false;
                 WidgetMedia.showVideo = false;
+                WidgetMedia.emptyBG = '../../../styles/media/holder-16x9.png';
 
                 WidgetMedia.fullScreen = false;
                 WidgetMedia.oldVideoStyle={position:"",width:"",height:"",marginTop:""};
@@ -408,7 +409,7 @@
                     var link = {};
                     link.title = WidgetMedia.item.data.title;
                     link.type = "website";
-                    link.description = WidgetMedia.item.data.summary ? WidgetMedia.item.data.summary : null;                    
+                    link.description = WidgetMedia.item.data.summary ? WidgetMedia.item.data.summary : '';                    
                     link.data = {
                         "mediaId": WidgetMedia.item.id
                     };

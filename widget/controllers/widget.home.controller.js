@@ -196,7 +196,11 @@
                             }
                             updateDelay = setTimeout(() => {
                                 $rootScope.refreshItems();
-                            }, 700);
+                            }, 300);
+                            if (!$scope.$$phase && !$scope.$root.$$phase) $scope.$apply();
+                        } else {
+                            buildfire.spinner.hide();
+                            if (!$scope.$$phase && !$scope.$root.$$phase) $scope.$apply();
                         }
                     } 
                     // Make sure to delete from globalPlaylist if exists
@@ -216,8 +220,8 @@
                     }
                     updateDelay = setTimeout(() => {
                         $rootScope.refreshItems();
-                    }, 700);
-                    
+                    }, 300);
+                    if (!$scope.$$phase && !$scope.$root.$$phase) $scope.$apply();
                 };
 
                 /**
@@ -239,6 +243,7 @@
                             }
                         }
                     }
+                    buildfire.spinner.hide();
                     if (!$scope.$$phase && !$scope.$root.$$phase) $scope.$apply();
                 });
 
@@ -367,7 +372,7 @@
                     if (delayInterval) clearInterval(delayInterval);
                 }
 
-                WidgetHome.loadMore = function () {
+                WidgetHome.loadMore = function (callback) {
                     if (WidgetHome.isBusy || WidgetHome.noMore) {
                         buildfire.spinner.hide();
                         $rootScope.loadingData = false;
@@ -426,21 +431,24 @@
                         });
                     };
 
+                    let interval;
+
                     getCurrentUser(() => {
                         // Get limit from appData
                         getGlobalPlaylistLimit();
                         
                         getGlobalPlaylistItems()
-                        .then(() => {
-                            setTimeout(() => {
-                                buildfire.spinner.hide();
-                                buildfire.spinner.hide();
-                                WidgetHome.isBusy = false;
-                                $rootScope.loadingData = false;
-                                $rootScope.loadingGlobalPlaylist = false;
-                                WidgetHome.glovalPlaylistLoaded = true;
-                                if (!$scope.$$phase && !$scope.$root.$$phase) $scope.$apply();
-                            }, 0)
+                        .finally(() => {
+                            WidgetHome.isBusy = false;
+                            $rootScope.loadingData = false;
+                            $rootScope.loadingGlobalPlaylist = false;
+                            WidgetHome.globalPlaylistLoaded = true;
+                            if (!$scope.$$phase && !$scope.$root.$$phase) $scope.$apply();
+
+                            // A work around for the spinner not disappearing 
+                            clearInterval(interval);
+                            interval = setInterval(() => buildfire.spinner.hide(), 300);
+                            setTimeout(() => clearInterval(interval), 2000);
                         });
                     });
                 };
@@ -465,9 +473,9 @@
                     searchOptions.skip = 0;
                     WidgetHome.items = [];
                     WidgetHome.noMore = false;
-                    $rootScope.loadingData = true;
-                    WidgetHome.glovalPlaylistLoaded = false;
+                    WidgetHome.globalPlaylistLoaded = false;
                     $rootScope.globalPlaylistItems = { playlist: {} };
+                    if (!$scope.$$phase && !$scope.$root.$$phase) $scope.$apply();
                     WidgetHome.loadMore();
                 };
 
@@ -533,7 +541,7 @@
                     var link = {};
                     link.title = item.data.title;
                     link.type = "website";
-                    link.description = item.data.summary ? item.data.summary : null;
+                    link.description = item.data.summary ? item.data.summary : '';
                     //link.imageUrl = item.data.topImage ? item.data.topImage : null;
 
                     link.data = {

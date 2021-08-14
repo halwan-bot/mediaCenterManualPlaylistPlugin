@@ -960,13 +960,32 @@ input[type=range]::-ms-track {
 .pb15 {
 	padding-bottom: 15px !important;
 }
-
 .pb30 {
 	padding-bottom: 30px !important;
 }
-
 .pb35 {
 	padding-bottom: 35px !important;
+}
+.pb40 {
+	padding-bottom: 40px !important;
+}
+.pb45 {
+	padding-bottom: 45px !important;
+}
+.pb50 {
+	padding-bottom: 50px !important;
+}
+.pb55 {
+	padding-bottom: 55px !important;
+}
+.pb60 {
+	padding-bottom: 60px !important;
+}
+.pb70 {
+	padding-bottom: 70px !important;
+}
+.pb75 {
+	padding-bottom: 75px !important;
 }
 
 #emptyContainer {
@@ -1005,4 +1024,16 @@ input[type=range]::-ms-track {
 	width: 49.5%;
 	float: right;
 	transition: none;    
+}
+
+.summary {
+	padding-top:0.5rem
+}
+
+.summary p {
+	font-size:13px; 
+	display: -webkit-box;
+	overflow: hidden;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;  
 }

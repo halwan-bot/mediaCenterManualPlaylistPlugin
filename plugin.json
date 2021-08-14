@@ -1,7 +1,7 @@
 {
   "author": "BuildFire",
-  "pluginName": "Media Center Manual Playlist [dev Hamza]",
-  "pluginDescription": "The Media Center plugin is incredibly useful for a variety of different media use cases. Create categorized manual entries of audio, video, and other stream media content. Keywords: MP4, stream, music, podcast, radio",
+  "pluginName": "Media Center Manual Playlist",
+  "pluginDescription": "Media Center Manual Playlist is a companion plugin to the Media Center Manual plugin. Media Center Manual Playlist allows users to save media items like video and audio from multiple instances of Media Center Manual to a single global playlist",
   "supportEmail": "support@buildfire.com",
   "pluginIcon": "icon.png",
   "offlineModeEnabled": true,
