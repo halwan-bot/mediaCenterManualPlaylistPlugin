@@ -56,7 +56,7 @@ p {
   display: block;
 }
 label{
-  color: var(--c-info);
+  /* color: var(--c-info); */
   font-size: .75rem;
 }
 h4, h5, h6 {
@@ -740,7 +740,7 @@ color: var(--c-info);
   box-shadow: 0 0 5px rgb(0 0 0 / 30%);
   content: "";
   height: 24px;
-  left: -4px;
+  left: 0;
   margin-top: -9px;
   position: absolute;
   top: -4px;
@@ -760,7 +760,7 @@ color: var(--c-info);
 
 .button-switch > input[type="checkbox"]:checked + label::after {
   background: inherit;
-  left: 25px;
+  left: 23px;
 }
 
 .button-switch.switch-sm > label::before {

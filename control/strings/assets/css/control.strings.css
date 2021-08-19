@@ -19,7 +19,8 @@
   
   .customTooltipBox .customTooltipText {
     visibility: hidden;
-    width: 200px;
+    font-size: 11px;
+    width: 300px;
     background-color: #414547;
     color: #fff;
     text-align: center;
@@ -102,6 +103,16 @@
   .customTooltipBoxTop:hover .customTooltipTextTop {
     visibility: visible;
     opacity: 0.9;
+  }
+
+  .customTooltipBox .customTooltipText {
+    max-width: 220px;
+    padding: 8px 12px;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    background-color: #32373a;
+    border-radius: 4px;
   }
 
   .subTitle {
