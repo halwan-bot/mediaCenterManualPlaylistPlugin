@@ -30,7 +30,7 @@
                             listLayout: "list-1",
                             itemLayout: "item-1",
                             backgroundImage: "",
-                            skipMediaPage: false
+                            skipMediaPage: true
                         }
                     }
                 };

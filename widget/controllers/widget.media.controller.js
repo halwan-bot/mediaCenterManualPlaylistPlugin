@@ -99,6 +99,7 @@
                     if (state === 'play') { // The video started playing
                         // Make sure the audio is turned off
                         Buildfire.services.media.audioPlayer.pause();
+                        $scope.videoPlayed = true;
                     }
                 };
 
@@ -130,6 +131,8 @@
                         } else {
                             myType=videoUrlToSend.split('.').pop();
                         }
+
+                        $scope.videoPlayed = false;
 
                         WidgetMedia.videoPlayerConfig.sources = [{
                             src: $sce.trustAsResourceUrl(videoUrlToSend),
@@ -270,7 +273,6 @@
                             }
                             break;
                         case COLLECTIONS.MediaCenter:
-                            buildfire.spinner.show();
                             var old = WidgetMedia.media.data.design.itemLayout;
                             WidgetMedia.media = event;
                             $rootScope.backgroundImage = WidgetMedia.media.data.design.backgroundImage;
@@ -279,9 +281,9 @@
                             $rootScope.forceAutoPlay = false; // WidgetMedia.media.data.content.forceAutoPlay;
                             // $rootScope.skipMediaPage = WidgetMedia.media.data.design.skipMediaPage;
                             
-                            $rootScope.autoPlay = WidgetMedia.media.data.content.autoPlay;
-                            $rootScope.autoPlayDelay = WidgetMedia.media.data.content.autoPlayDelay;
-
+                            $rootScope.autoPlay = typeof WidgetMedia.media.data.content.autoPlay !== 'undefined' ? WidgetMedia.media.data.content.autoPlay : true;
+                            $rootScope.autoPlayDelay = typeof WidgetMedia.media.data.content.autoPlayDelay !== 'undefined' ? WidgetMedia.media.data.content.autoPlayDelay : { label: "Off", value: 0 };
+                            
                             // Update Data in media contoller
                             $rootScope.refreshItems();
 
@@ -301,7 +303,7 @@
                     const globalPlaylistTag = 'MediaContent' + ($rootScope.user && $rootScope.user._id ? $rootScope.user._id : Buildfire.context.deviceId ? Buildfire.context.deviceId : 'globalPlaylist');
                     if (event) {
                         if (event.tag === "GlobalPlayListSettings") {
-                            if (event.data && typeof event.data.globalPlaylistLimit !== 'undefined') {
+                            if (event.data) {
                                 $rootScope.globalPlaylistLimit = event.data.globalPlaylistLimit;
                             }
                         } else if (event.tag === globalPlaylistTag) {
@@ -345,9 +347,9 @@
                     $rootScope.playNextItem();
                 }
 
-                // let interval;
                 WidgetMedia.toggleShowVideo = function (forceShow) {
                     WidgetMedia.showVideo = forceShow ? true : !WidgetMedia.showVideo;
+
                     if (!$scope.$$phase && !$scope.$root.$$phase) $scope.$apply();
                 };
 

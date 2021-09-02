@@ -8,6 +8,7 @@
                 var WidgetHome = this;
                 WidgetHome.deepLink = false;
                 $rootScope.loadingData = true;
+                $rootScope.autoPlay = true;
 
                 const isLauncher = window.location.href.includes('launcherPlugin');
                 const slideElement = document.querySelector(".slide");
@@ -79,8 +80,8 @@
                     $rootScope.forceAutoPlay = false; // MediaCenterInfo.data.content.forceAutoPlay;
                     $rootScope.skipMediaPage = MediaCenterInfo.data.design.skipMediaPage
 
-                    $rootScope.autoPlay = MediaCenterInfo.data.content.autoPlay;
-                    $rootScope.autoPlayDelay = MediaCenterInfo.data.content.autoPlayDelay;
+                    $rootScope.autoPlay = typeof MediaCenterInfo.data.content.autoPlay !== 'undefined' ? MediaCenterInfo.data.content.autoPlay : true;
+                    $rootScope.autoPlayDelay = typeof MediaCenterInfo.data.content.autoPlayDelay !== 'undefined' ? MediaCenterInfo.data.content.autoPlayDelay : { label: "Off", value: 0 };
                 },
                     function fail() {
                         MediaCenterInfo = _infoData;
@@ -196,8 +197,8 @@
                             $rootScope.forceAutoPlay = false; // WidgetHome.media.data.content.forceAutoPlay
                             $rootScope.skipMediaPage = WidgetHome.media.data.design.skipMediaPage;
 
-                            $rootScope.autoPlay = WidgetHome.media.data.content.autoPlay;
-                            $rootScope.autoPlayDelay = WidgetHome.media.data.content.autoPlayDelay;
+                            $rootScope.autoPlay = typeof MediaCenterInfo.data.content.autoPlay !== 'undefined' ? MediaCenterInfo.data.content.autoPlay : true;
+                            $rootScope.autoPlayDelay = typeof WidgetHome.media.data.content.autoPlayDelay !== 'undefined' ? WidgetHome.media.data.content.autoPlayDelay : { label: "Off", value: 0 };
 
                             if (view && event.data.content && event.data.content.images) {
                                 view.loadItems(event.data.content.images);
@@ -243,7 +244,7 @@
                     const globalPlaylistTag = 'MediaContent' + ($rootScope.user && $rootScope.user._id ? $rootScope.user._id : Buildfire.context.deviceId ? Buildfire.context.deviceId : 'globalPlaylist');
                     if (event) {
                         if (event.tag === "GlobalPlayListSettings") {
-                            if (event.data && typeof event.data.globalPlaylistLimit !== 'undefined') {
+                            if (event.data) {
                                 $rootScope.globalPlaylistLimit = event.data.globalPlaylistLimit;
                             }
                         } else if (event.tag === globalPlaylistTag) {
@@ -315,7 +316,7 @@
                     $event.stopImmediatePropagation();
 
                     let itemPage = false;
-                    if (!index) {
+                    if (!index && index !== 0) {
                         itemPage = true;
                         for (let i = 0; i < WidgetHome.items.length; i++) {
                             if (WidgetHome.items[i].id === item.id) {
@@ -328,6 +329,7 @@
                     GlobalPlaylist.delete(item.id).then(() => {
                         delete $rootScope.globalPlaylistItems.playlist[item.id];
                         WidgetHome.items.splice(index, 1);
+                        if (!$scope.$$phase && !$scope.$root.$$phase) $scope.$apply();
                         buildfire.dialog.toast({
                             message: `Item removed from playlist`,
                             type: 'success',
@@ -434,10 +436,10 @@
 
                     const getGlobalPlaylistLimit = () => {
                         GlobalPlaylist.getGlobalPlaylistLimit().then((result) => {
-                            if (result && result.data && typeof result.data.globalPlaylistLimit !== 'undefined') {
+                            if (result && result.data) {
                                 $rootScope.globalPlaylistLimit = result.data.globalPlaylistLimit;
                             } else {
-                                $rootScope.globalPlaylistLimit = 0;
+                                $rootScope.globalPlaylistLimit = undefined;
                             };
                         });
                     };

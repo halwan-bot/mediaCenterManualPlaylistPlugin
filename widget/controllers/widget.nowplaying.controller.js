@@ -651,7 +651,6 @@
                             break;
                         case COLLECTIONS.MediaCenter:
                             if (event.data) {
-                                buildfire.spinner.show();
                                 $rootScope.design = event.data.design;
                                 // $rootScope.allowShare = event.data.content.allowShare;
                                 // $rootScope.allowSource = event.data.content.allowSource;
@@ -661,8 +660,8 @@
                                 NowPlaying.transferPlaylist = false; // event.data.content.forceAutoPlay;
                                 $rootScope.skipMediaPage = event.data.design.skipMediaPage;
 
-                                $rootScope.autoPlay = event.data.content.autoPlay;
-                                $rootScope.autoPlayDelay = event.data.content.autoPlayDelay;
+                                $rootScope.autoPlay = typeof event.data.content.autoPlay !== 'undefined' ? event.data.content.autoPlay : true
+                                $rootScope.autoPlayDelay = typeof event.data.content.autoPlayDelay !== 'undefined' ? event.data.content.autoPlayDelay : { label: "Off", value: 0 };
                                 $rootScope.globalPlaylist = event.data.content.globalPlaylist;
 
                                 // Update Data in media contoller
@@ -680,7 +679,7 @@
                     const globalPlaylistTag = 'MediaContent' + ($rootScope.user && $rootScope.user._id ? $rootScope.user._id : Buildfire.context.deviceId ? Buildfire.context.deviceId : 'globalPlaylist');
                     if (event) {
                         if (event.tag === "GlobalPlayListSettings") {
-                            if (event.data && typeof event.data.globalPlaylistLimit !== 'undefined') {
+                            if (event.data) {
                                 $rootScope.globalPlaylistLimit = event.data.globalPlaylistLimit;
                             }
                         } else if (event.tag === globalPlaylistTag) {

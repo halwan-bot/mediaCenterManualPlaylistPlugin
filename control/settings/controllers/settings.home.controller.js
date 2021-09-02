@@ -24,10 +24,10 @@
             });
 
             GlobalPlayListSettings.get().then(result => {
-                if (result && result.data && typeof result.data.globalPlaylistLimit !== 'undefined') {
+                if (result && result.data) {
                     $scope.inputs.globalPlaylistLimit = result.data.globalPlaylistLimit;
                 } else {
-                    $scope.inputs.globalPlaylistLimit = 0;
+                    $scope.inputs.globalPlaylistLimit = undefined;
                 };
             })
 

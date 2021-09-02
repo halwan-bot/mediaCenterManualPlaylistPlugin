@@ -22,7 +22,7 @@
                         listLayout: "list-1",
                         itemLayout: "item-1",
                         backgroundImage: "",
-                        skipMediaPage: false
+                        skipMediaPage: true
                     }
                 }
             };
@@ -38,7 +38,7 @@
                 background.loadbackground(DesignHome.mediaInfo.data.design.backgroundImage);
             }
             if(!DesignHome.mediaInfo.data.design.skipMediaPage)
-                DesignHome.mediaInfo.data.design.skipMediaPage=false;
+                DesignHome.mediaInfo.data.design.skipMediaPage = true;
             /*Buildfire DB Service*/
 
             DesignHome._mediaCenter = new DB(COLLECTIONS.MediaCenter);
